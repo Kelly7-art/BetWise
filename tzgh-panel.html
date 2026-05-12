@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:#07090c;color:#dde6f0;
+  min-height:100vh;padding:20px;
+}
+:root{
+  --g:#0bff7e;--gold:#ffcb2d;--gold2:#e6a800;--red:#ff4560;
+  --bg:#07090c;--bg2:#0c1018;--card:#131b24;--card2:#192130;
+  --bdr:rgba(255,255,255,0.07);--bdr2:rgba(255,255,255,0.12);
+  --muted:#556070;--muted2:#7a8fa0;
+}
+
+/* ── LOGIN ── */
+#login-screen{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;margin:-20px;padding:20px;
+}
+.login-box{
+  background:var(--card);border:1px solid var(--bdr2);
+  border-radius:22px;padding:36px 24px;width:100%;max-width:360px;
+  animation:popIn .4s cubic-bezier(.175,.885,.32,1.275) both;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.93) translateY(14px)}to{opacity:1;transform:none}}
+.login-logo{text-align:center;margin-bottom:6px;font-size:22px;font-weight:800;}
+.login-logo span{color:var(--gold);}
+.login-sub{text-align:center;color:var(--muted2);font-size:13px;margin-bottom:24px;}
+.fld{margin-bottom:14px;}
+.fld label{display:block;font-size:11px;color:var(--muted2);margin-bottom:6px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.8px;}
+.fld input,.fld textarea{
+  width:100%;background:var(--bg2);border:1px solid var(--bdr);
+  border-radius:10px;padding:12px 14px;color:#dde6f0;
+  font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.fld input:focus,.fld textarea:focus{border-color:rgba(255,203,45,.4);box-shadow:0 0 0 3px rgba(255,203,45,.06);}
+.fld textarea{resize:vertical;min-height:70px;}
+.btn-login{
+  width:100%;padding:14px;border:none;border-radius:12px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#000;font-size:15px;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;
+  transition:opacity .2s,transform .1s;margin-top:4px;
+}
+.btn-login:hover{opacity:.88;}
+.login-err{
+  background:rgba(255,69,96,.08);border:1px solid rgba(255,69,96,.25);
+  color:var(--red);padding:10px 14px;border-radius:8px;
+  font-size:13px;margin-top:14px;display:none;text-align:center;
+}
+
+/* ── ADMIN ── */
+#admin-app{display:none;max-width:580px;margin:0 auto;}
+#admin-app.visible{display:block;}
+.admin-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0 24px;
+}
+.admin-title{font-size:20px;font-weight:800;}
+.admin-title span{color:var(--gold);}
+.btn-out{
+  background:transparent;border:1px solid var(--bdr);
+  color:var(--muted2);padding:7px 14px;border-radius:20px;
+  font-size:12px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;
+  transition:all .2s;
+}
+.btn-out:hover{border-color:var(--red);color:var(--red);}
+
+.upload-card{
+  background:var(--card);border:1px solid rgba(255,203,45,.2);
+  border-radius:22px;padding:24px 20px;margin-bottom:24px;
+}
+.upload-card h3{font-size:18px;font-weight:800;margin-bottom:5px;}
+.upload-card .sub{color:var(--muted2);font-size:13px;margin-bottom:20px;line-height:1.6;}
+
+.img-upload{
+  border:2px dashed rgba(255,203,45,.25);border-radius:14px;
+  padding:24px;text-align:center;cursor:pointer;
+  transition:border-color .2s,background .2s;margin-bottom:14px;
+  position:relative;
+}
+.img-upload:hover{border-color:rgba(255,203,45,.5);background:rgba(255,203,45,.03);}
+.img-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.img-upload .iu-ico{font-size:28px;margin-bottom:6px;}
+.img-upload .iu-txt{font-size:13px;color:var(--muted2);}
+.img-upload .iu-hint{font-size:11px;color:var(--muted);margin-top:3px;}
+#preview-wrap{display:none;margin-bottom:14px;}
+#preview-img{width:100%;border-radius:12px;max-height:200px;object-fit:cover;border:1px solid var(--bdr);}
+.btn-rm{
+  background:rgba(255,69,96,.1);border:1px solid rgba(255,69,96,.2);
+  color:var(--red);padding:6px 14px;border-radius:8px;
+  font-size:12px;cursor:pointer;margin-top:8px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+
+.outcome-row{display:flex;gap:8px;margin-bottom:16px;}
+.oc-btn{
+  flex:1;padding:12px 8px;border-radius:12px;border:2px solid var(--bdr);
+  background:transparent;color:var(--muted2);font-size:13px;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.oc-btn .oci{font-size:20px;}
+.oc-btn.sel-won {background:rgba(11,255,126,.1);border-color:rgba(11,255,126,.4);color:#0bff7e;}
+.oc-btn.sel-lost{background:rgba(255,69,96,.1); border-color:rgba(255,69,96,.4); color:#ff4560;}
+.oc-btn.sel-draw{background:rgba(255,203,45,.1);border-color:rgba(255,203,45,.4);color:#ffcb2d;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:400px){.two-col{grid-template-columns:1fr;}}
+
+.btn-submit{
+  width:100%;padding:15px;border:none;border-radius:13px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#000;font-size:15px;font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:opacity .2s,transform .1s;margin-top:8px;
+}
+.btn-submit:hover{opacity:.88;}
+.btn-submit:active{transform:scale(.98);}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;}
+
+.smsg{text-align:center;font-size:13px;padding:12px;border-radius:10px;margin-top:12px;display:none;}
+.smsg.ok {background:rgba(11,255,126,.08);color:var(--g);display:block;}
+.smsg.err{background:rgba(255,69,96,.08);color:var(--red);display:block;}
+
+.vip-list-card{background:var(--card);border:1px solid var(--bdr);border-radius:22px;padding:20px;}
+.vip-list-title{font-size:16px;font-weight:800;margin-bottom:14px;}
+.vip-item{
+  background:var(--card2);border:1px solid var(--bdr);
+  border-radius:12px;padding:13px;margin-bottom:10px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.vip-item-left{flex:1;min-width:0;}
+.vip-item-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);margin-bottom:3px;}
+.vip-item-oc{font-size:13px;font-weight:700;}
+.vip-item-oc.won{color:var(--g);} .vip-item-oc.lost{color:var(--red);} .vip-item-oc.draw{color:var(--gold);}
+.vip-item-meta{font-size:11px;color:var(--muted2);margin-top:2px;}
+.btn-del{
+  background:rgba(255,69,96,.1);border:1px solid rgba(255,69,96,.2);
+  color:var(--red);padding:6px 12px;border-radius:8px;
+  font-size:12px;cursor:pointer;flex-shrink:0;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.no-vip{color:var(--muted);font-size:13px;text-align:center;padding:20px 0;}
+.loading-vip{color:var(--muted2);font-size:13px;text-align:center;padding:20px 0;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">⚙️ <span>TipzoGH</span> Panel</div>
+    <p class="login-sub">Admin access only.</p>
+    <div class="fld">
+      <label>Password</label>
+      <input type="password" id="pw-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="btn-login" onclick="doLogin()">Access Panel →</button>
+    <div class="login-err" id="login-err">⚠ Incorrect password.</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-app">
+  <div class="admin-header">
+    <div class="admin-title">⚙️ <span>VIP Panel</span></div>
+    <button class="btn-out" onclick="doLogout()">Sign Out</button>
+  </div>
+
+  <div class="upload-card">
+    <h3>👑 Upload VIP Result</h3>
+    <p class="sub">Upload screenshot, pick outcome, add odds & price — then publish. Shows on user page instantly across all devices.</p>
+
+    <div class="img-upload" id="img-drop">
+      <input type="file" id="img-input" accept="image/*" onchange="handleImage(this)"/>
+      <div class="iu-ico">📸</div>
+      <div class="iu-txt">Tap to upload screenshot</div>
+      <div class="iu-hint">JPG, PNG, WEBP · Max 5MB</div>
+    </div>
+    <div id="preview-wrap">
+      <img id="preview-img" src="" alt="Preview"/>
+      <button class="btn-rm" onclick="removeImage()">✕ Remove Image</button>
+    </div>
+
+    <div style="font-size:11px;color:var(--muted2);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">Outcome *</div>
+    <div class="outcome-row">
+      <button class="oc-btn" id="oc-won"  onclick="selectOutcome('won')"><span class="oci">✅</span>Won</button>
+      <button class="oc-btn" id="oc-lost" onclick="selectOutcome('lost')"><span class="oci">❌</span>Lost</button>
+      <button class="oc-btn" id="oc-draw" onclick="selectOutcome('draw')"><span class="oci">🤝</span>Draw</button>
+    </div>
+
+    <div class="two-col">
+      <div class="fld" style="margin:0;">
+        <label>Odds Won</label>
+        <input type="number" id="inp-odds" placeholder="e.g. 12.50" step="0.01" min="1"/>
+      </div>
+      <div class="fld" style="margin:0;">
+        <label>Ticket Price (GH₵)</label>
+        <input type="number" id="inp-price" placeholder="e.g. 15" min="1"/>
+      </div>
+    </div>
+
+    <div class="fld">
+      <label>Note (Optional)</label>
+      <input type="text" id="inp-note" placeholder="e.g. Weekend 5-fold special"/>
+    </div>
+
+    <button class="btn-submit" id="submit-btn" onclick="submitVip()">
+      📤 Publish to VIP History
+    </button>
+    <div class="smsg" id="smsg"></div>
+  </div>
+
+  <div class="vip-list-card">
+    <div class="vip-list-title">📋 Recent VIP Uploads</div>
+    <div id="vip-list"><div class="loading-vip">Loading…</div></div>
+  </div>
+</div>
+
+<script>
+const SB_URL = 'https://owaptrbdcoszsiuyfwpi.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93YXB0cmJkY29zenNpdXlmd3BpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1NDE1MDAsImV4cCI6MjA5NDExNzUwMH0.PnY3PZ6kr0sQbB9XwUcW-vdwr1QUcIjVE3uwttyRUzk';
+
+// Password hash — never stored as plain text
+const HASH = '7a26f0484adfa6e2d7e2bb8b8abb8c9e7d3e5f1d2c4b6a8e9f0d1c2b3a4e5f6';
+
+async function sha256(str){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function sbFetch(path,opts={}){
+  const res=await fetch(`${SB_URL}/rest/v1/${path}`,{
+    headers:{
+      'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,
+      'Content-Type':'application/json','Prefer':'return=representation',
+      ...opts.headers
+    },...opts
+  });
+  if(!res.ok) throw new Error(await res.text());
+  const txt=await res.text();
+  return txt?JSON.parse(txt):[];
+}
+
+async function doLogin(){
+  const pw=document.getElementById('pw-input').value;
+  const hashed=await sha256(pw);
+  if(hashed===HASH){
+    sessionStorage.setItem('tzgh_admin','1');
+    showAdmin();
+  } else {
+    document.getElementById('login-err').style.display='block';
+    document.getElementById('pw-input').value='';
+  }
+}
+
+function doLogout(){
+  sessionStorage.removeItem('tzgh_admin');
+  document.getElementById('admin-app').classList.remove('visible');
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('pw-input').value='';
+  document.getElementById('login-err').style.display='none';
+}
+
+function showAdmin(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('admin-app').classList.add('visible');
+  loadVipList();
+}
+
+// ── IMAGE ──
+let imageBase64=null;
+function handleImage(input){
+  const file=input.files[0];
+  if(!file) return;
+  if(file.size>5*1024*1024){alert('Image too large. Max 5MB.');return;}
+  const r=new FileReader();
+  r.onload=e=>{
+    imageBase64=e.target.result;
+    document.getElementById('preview-img').src=imageBase64;
+    document.getElementById('preview-wrap').style.display='block';
+    document.getElementById('img-drop').style.display='none';
+  };
+  r.readAsDataURL(file);
+}
+function removeImage(){
+  imageBase64=null;
+  document.getElementById('img-input').value='';
+  document.getElementById('preview-wrap').style.display='none';
+  document.getElementById('img-drop').style.display='block';
+}
+
+// ── OUTCOME ──
+let selectedOutcome=null;
+function selectOutcome(oc){
+  selectedOutcome=oc;
+  ['won','lost','draw'].forEach(o=>{
+    const b=document.getElementById('oc-'+o);
+    b.className='oc-btn';
+    if(o===oc) b.classList.add('sel-'+o);
+  });
+}
+
+// ── SUBMIT → SUPABASE ──
+async function submitVip(){
+  const btn=document.getElementById('submit-btn');
+  if(!selectedOutcome){showMsg('err','⚠ Select an outcome first.');return;}
+  btn.disabled=true; btn.textContent='Publishing…';
+
+  try{
+    await sbFetch('vip_history',{
+      method:'POST',
+      body:JSON.stringify({
+        outcome:selectedOutcome,
+        image:imageBase64||null,
+        odds:document.getElementById('inp-odds').value||null,
+        price:document.getElementById('inp-price').value||null,
+        note:document.getElementById('inp-note').value||null
+      })
+    });
+    showMsg('ok','✅ Published! Showing on user VIP tab now.');
+    resetForm();
+    loadVipList();
+  } catch(e){
+    showMsg('err','⚠ Failed to publish: '+e.message);
+  } finally{
+    btn.disabled=false; btn.innerHTML='📤 Publish to VIP History';
+  }
+}
+
+function showMsg(type,txt){
+  const el=document.getElementById('smsg');
+  el.className='smsg '+type; el.textContent=txt;
+  setTimeout(()=>{el.className='smsg';},5000);
+}
+
+function resetForm(){
+  removeImage();
+  selectedOutcome=null;
+  ['won','lost','draw'].forEach(o=>document.getElementById('oc-'+o).className='oc-btn');
+  ['inp-odds','inp-price','inp-note'].forEach(id=>document.getElementById(id).value='');
+}
+
+// ── LOAD LIST FROM SUPABASE ──
+async function loadVipList(){
+  const list=document.getElementById('vip-list');
+  list.innerHTML='<div class="loading-vip">Loading…</div>';
+  try{
+    const data=await sbFetch('vip_history?select=*&order=date.desc&limit=15');
+    if(!data.length){list.innerHTML='<div class="no-vip">No uploads yet.</div>';return;}
+    list.innerHTML=data.map(v=>{
+      const oc=v.outcome;
+      const icon=oc==='won'?'✅':oc==='lost'?'❌':'🤝';
+      const txt=oc==='won'?'Won':oc==='lost'?'Lost':'Draw';
+      const dateStr=new Date(v.date).toLocaleDateString('en-GH',{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+      return`<div class="vip-item">
+        <div class="vip-item-left">
+          <div class="vip-item-date">${dateStr}</div>
+          <div class="vip-item-oc ${oc}">${icon} ${txt}</div>
+          <div class="vip-item-meta">${v.odds?'Odds: '+v.odds:''}${v.price?' · GH₵'+v.price:''}${v.note?' · '+v.note:''}</div>
+        </div>
+        <button class="btn-del" onclick="deleteVip(${v.id})">✕</button>
+      </div>`;
+    }).join('');
+  } catch(e){
+    list.innerHTML='<div class="no-vip">Error loading list.</div>';
+  }
+}
+
+// ── DELETE ──
+async function deleteVip(id){
+  if(!confirm('Delete this VIP entry?')) return;
+  try{
+    await sbFetch(`vip_history?id=eq.${id}`,{method:'DELETE'});
+    loadVipList();
+  } catch(e){ alert('Delete failed: '+e.message); }
+}
+
+// ── INIT ──
+(function(){
+  if(sessionStorage.getItem('tzgh_admin')==='1') showAdmin();
+})();
+</script>
+</body>
+</html>
