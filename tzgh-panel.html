@@ -232,7 +232,7 @@ const SB_URL = 'https://owaptrbdcoszsiuyfwpi.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93YXB0cmJkY29zenNpdXlmd3BpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1NDE1MDAsImV4cCI6MjA5NDExNzUwMH0.PnY3PZ6kr0sQbB9XwUcW-vdwr1QUcIjVE3uwttyRUzk';
 
 // Password hash — never stored as plain text
-const HASH = '7a26f0484adfa6e2d7e2bb8b8abb8c9e7d3e5f1d2c4b6a8e9f0d1c2b3a4e5f6';
+const HASH = 'db6a900149043e6bdedae0aa49ef01f327190cae059745cbdc431d00c7905e35';
 
 async function sha256(str){
   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
@@ -392,4 +392,5 @@ async function deleteVip(id){
 })();
 </script>
 </body>
-</html>
+  </html>
+  
